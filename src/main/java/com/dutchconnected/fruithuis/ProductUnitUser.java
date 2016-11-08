@@ -114,5 +114,9 @@ public class ProductUnitUser {
     public void setMinAmount(int minAmount) {
         this.minAmount = minAmount;
     }
+    
+    public double getPriceForAmountOfProduct(int total) {
+        return (this.getBasisPrice() + total * this.getAmountPrice());
+    }
 
 }

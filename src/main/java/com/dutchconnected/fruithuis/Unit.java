@@ -25,16 +25,16 @@ public class Unit {
     
     
     @Column(name = "naam_enkel", nullable = false)
-    private int small;
+    private String small;
     
     @Column(name = "naam_meervoud", nullable = false)
-    private int large;
+    private String large;
     
 
     public Unit() {
     }
 
-    public Unit(int id, int small, int large) {
+    public Unit(int id, String small, String large) {
         this.id = id;
         this.small = small;
         this.large = large;
@@ -48,19 +48,19 @@ public class Unit {
         this.id = id;
     }   
 
-    public int getSmall() {
+    public String getSmall() {
         return small;
     }
 
-    public void setSmall(int small) {
+    public void setSmall(String small) {
         this.small = small;
     }
 
-    public int getLarge() {
+    public String getLarge() {
         return large;
     }
 
-    public void setLarge(int large) {
+    public void setLarge(String large) {
         this.large = large;
     }
     

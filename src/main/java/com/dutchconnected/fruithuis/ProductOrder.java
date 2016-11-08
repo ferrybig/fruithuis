@@ -27,7 +27,7 @@ public class ProductOrder {
     
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Product productId;
+    private ProductUnitUser productId;
     
     @ManyToOne
     @JoinColumn(name = "bestelling_id")
@@ -42,7 +42,7 @@ public class ProductOrder {
     public ProductOrder() {
     }
 
-    public ProductOrder(int id, Product productId, Order orderId, float amount, long date) {
+    public ProductOrder(int id, ProductUnitUser productId, Order orderId, float amount, long date) {
         this.id = id;
         this.productId = productId;
         this.orderId = orderId;
@@ -58,11 +58,11 @@ public class ProductOrder {
         this.id = id;
     }
 
-    public Product getProductId() {
+    public ProductUnitUser getProductId() {
         return productId;
     }
 
-    public void setProductId(Product productId) {
+    public void setProductId(ProductUnitUser productId) {
         this.productId = productId;
     }
 
