@@ -12,6 +12,7 @@ import com.dutchconnected.fruithuis.ProductOrder;
 import com.dutchconnected.fruithuis.ProductUnitUser;
 import com.dutchconnected.fruithuis.Unit;
 import com.dutchconnected.fruithuis.User;
+import javax.swing.JOptionPane;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -21,6 +22,11 @@ import org.hibernate.cfg.Configuration;
  * @author Karan
  */
 public class Loginforum extends javax.swing.JFrame {
+
+	private User user;
+	User getUser() {
+		return user;
+	}
 
     private final SessionFactory factory;
 
@@ -126,9 +132,9 @@ public class Loginforum extends javax.swing.JFrame {
 
     private void klantloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_klantloginActionPerformed
         try(Session s = factory.openSession()) {
-            User user = s.find(User.class, klantnr.getText());
+            user = s.find(User.class, klantnr.getText());
             if(user == null) {
-                
+                JOptionPane.showMessageDialog(this, "Ongeldig klant nummer", "Probleem", JOptionPane.ERROR_MESSAGE);
             } else {
                 this.dispose();
                 
