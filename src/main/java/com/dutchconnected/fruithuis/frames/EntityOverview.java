@@ -31,7 +31,7 @@ public class EntityOverview<T> extends javax.swing.JDialog {
 	private final SessionFactory connection;
 	private TableModel model;
 
-	public EntityOverview(JFrame parent, Class<T> entity, SessionFactory connection,
+	public EntityOverview(Window parent, Class<T> entity, SessionFactory connection,
 			BiFunction<? super JDialog, SessionFactory, Window> addFunction) {
 		super(parent);
 		this.entity = entity;

@@ -15,11 +15,8 @@ public class CategoryAdd extends javax.swing.JDialog {
 
 	private final SessionFactory connection;
 
-	/**
-	 * Creates new form CategoryAdd
-	 */
-	public CategoryAdd(java.awt.Frame parent, SessionFactory connection) {
-		super(parent, true);
+	public CategoryAdd(java.awt.Window parent, SessionFactory connection) {
+		super(parent);
 		this.connection = connection;
 		initComponents();
 	}
