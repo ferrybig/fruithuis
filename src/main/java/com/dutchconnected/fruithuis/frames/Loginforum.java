@@ -132,7 +132,7 @@ public class Loginforum extends javax.swing.JFrame {
 
     private void klantloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_klantloginActionPerformed
         try(Session s = factory.openSession()) {
-            user = s.find(User.class, klantnr.getText());
+            user = s.find(User.class, Integer.parseInt(klantnr.getText()));
             if(user == null) {
                 JOptionPane.showMessageDialog(this, "Ongeldig klant nummer", "Probleem", JOptionPane.ERROR_MESSAGE);
             } else {

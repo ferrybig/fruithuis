@@ -104,7 +104,7 @@ public class Categorie extends javax.swing.JFrame {
         Loginforum w = new Loginforum(factory);
 		w.setVisible(true);
 		this.setVisible(false);
-		w.addWindowListener(new WindowAdapter() {
+		w.addWindowFocusListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				setVisible(true);
