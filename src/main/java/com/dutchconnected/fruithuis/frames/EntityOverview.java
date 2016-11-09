@@ -31,7 +31,6 @@ public class EntityOverview<T> extends javax.swing.JDialog {
 	private final SessionFactory connection;
 	private TableModel model;
 
-	@SuppressWarnings("unchecked")
 	public EntityOverview(JFrame parent, Class<T> entity, SessionFactory connection,
 			BiFunction<? super JDialog, SessionFactory, Window> addFunction) {
 		super(parent);

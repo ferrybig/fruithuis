@@ -105,6 +105,7 @@ public class ProductFrame extends javax.swing.JPanel {
     public static void main(String[] arg) throws IOException {
         Product product = new Product();
         
+		
         product.setId(1);
         product.setName("test");
         Set<ProductUnitUser> prices = new HashSet<>();

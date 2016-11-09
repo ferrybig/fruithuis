@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "PRODUCTSOORT")
-
 public class Category {
     @Id
     @GeneratedValue
