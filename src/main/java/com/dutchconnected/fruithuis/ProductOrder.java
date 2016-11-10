@@ -95,7 +95,7 @@ public class ProductOrder implements Serializable {
 
     @Override
     public String toString() {
-        return "ProductOrder{" + "id=" + id + ", productId=" + productId + ", orderId=" + orderId + ", amount=" + amount + ", date=" + date + '}';
+        return "ProductOrder {" + orderId + ", aantal=" + amount + ", datum=" + date + '}';
     }
     
     
