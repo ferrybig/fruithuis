@@ -109,6 +109,12 @@ public class User {
     public void setKlantnummer(int klantnummer) {
         this.klantnummer = klantnummer;
     }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", name=" + name + ", address=" + address + ", city=" + city + ", zipcode=" + zipcode + ", phone=" + phone + ", klantnummer=" + klantnummer + '}';
+    }
+    
     
     
     

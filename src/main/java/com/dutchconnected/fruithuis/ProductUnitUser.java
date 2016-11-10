@@ -119,4 +119,11 @@ public class ProductUnitUser {
         return (this.getBasisPrice() + total * this.getAmountPrice());
     }
 
+    @Override
+    public String toString() {
+        return "ProductUnitUser{" + "id=" + id + ", productId=" + productId + ", unitId=" + unitId + ", userId=" + userId + ", basisPrice=" + basisPrice + ", amountPrice=" + amountPrice + ", minAmount=" + minAmount + '}';
+    }
+    
+    
+
 }

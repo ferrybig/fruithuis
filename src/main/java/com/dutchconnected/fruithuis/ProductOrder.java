@@ -89,6 +89,12 @@ public class ProductOrder {
     public void setDate(long date) {
         this.date = date;
     }
+
+    @Override
+    public String toString() {
+        return "ProductOrder{" + "id=" + id + ", productId=" + productId + ", orderId=" + orderId + ", amount=" + amount + ", date=" + date + '}';
+    }
+    
     
     
     

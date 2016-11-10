@@ -64,6 +64,12 @@ public class Order {
     public void setPrice(int price) {
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" + "id=" + id + ", userId=" + userId + ", price=" + price + '}';
+    }
+    
     
     
     

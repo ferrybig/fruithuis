@@ -63,6 +63,13 @@ public class Unit {
     public void setLarge(String large) {
         this.large = large;
     }
+
+    @Override
+    public String toString() {
+        return "Unit{" + "id=" + id + ", small=" + small + ", large=" + large + '}';
+    }
+    
+    
     
     
     
