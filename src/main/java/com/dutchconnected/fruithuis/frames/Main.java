@@ -49,7 +49,8 @@ public class Main {
 
         Class.forName("oracle.jdbc.driver.OracleDriver");
           SessionFactory factory = new Configuration().
-                    configure().
+                  
+                    
                     //addPackage("com.xyz") //add package if used.
                     addAnnotatedClass(Category.class).
                     addAnnotatedClass(Order.class).
@@ -58,6 +59,7 @@ public class Main {
                     addAnnotatedClass(ProductUnitUser.class).
                     addAnnotatedClass(Unit.class).
                     addAnnotatedClass(User.class).
+                  configure().
                     buildSessionFactory();
             
         /* Create and display the form */

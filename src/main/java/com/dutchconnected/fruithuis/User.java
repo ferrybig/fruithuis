@@ -37,17 +37,21 @@ public class User {
     
     @Column(name = "telefoonnummer")
     private String phone;
+    
+    @Column (name = "klantnummer")
+    private int klantnummer;
 
     public User() {
     }
 
-    public User(int id, String name, String address, String city, String zipcode, String phone) {
+    public User(int id, String name, String address, String city, String zipcode, String phone, int klantnummer) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.city = city;
         this.zipcode = zipcode;
         this.phone = phone;
+        this.klantnummer = klantnummer;
     }
 
     public int getId() {
@@ -97,6 +101,21 @@ public class User {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    public int getKlantnummer() {
+        return klantnummer;
+    }
+
+    public void setKlantnummer(int klantnummer) {
+        this.klantnummer = klantnummer;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", name=" + name + ", address=" + address + ", city=" + city + ", zipcode=" + zipcode + ", phone=" + phone + ", klantnummer=" + klantnummer + '}';
+    }
+    
+    
     
     
     

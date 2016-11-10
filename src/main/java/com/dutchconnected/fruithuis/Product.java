@@ -100,6 +100,13 @@ public class Product {
     public void setPrice(Set<ProductUnitUser> price) {
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" + "id=" + id + ", name=" + name + ", image=" + image + ", categoryId=" + categoryId + ", price=" + price + '}';
+    }
+    
+    
     
     
 

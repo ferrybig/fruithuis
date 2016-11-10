@@ -138,7 +138,7 @@ public class Administrator extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void categorieShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categorieShowActionPerformed
-        
+
     }//GEN-LAST:event_categorieShowActionPerformed
 
 
