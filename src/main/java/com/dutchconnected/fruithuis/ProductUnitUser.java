@@ -5,6 +5,7 @@
  */
 package com.dutchconnected.fruithuis;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +21,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "PRODUCT_UNIT_USER")
 
-public class ProductUnitUser {
+public class ProductUnitUser implements Serializable {
+
+	private static final long serialVersionUID = 9152569989370027980L;
     @Id @GeneratedValue
     @Column(name = "id")
     private int id;

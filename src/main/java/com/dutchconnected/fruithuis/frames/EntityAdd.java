@@ -13,6 +13,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -22,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 /**
  *
@@ -35,9 +37,9 @@ public class EntityAdd<E> extends javax.swing.JDialog {
 
 	@SuppressWarnings("cast")
 	public EntityAdd(Window p, SessionFactory connector, Crud<E> crud) {
-		super(p);
+		super(p, ModalityType.DOCUMENT_MODAL);
 		initComponents();
-		this.title.setText(this.title.getText() + crud.getClazz().getCanonicalName());
+		this.title.setText(this.title.getText() + crud.getClazz().getSimpleName());
 		this.connector = connector;
 		this.crud = crud;
 		List<Crud<E>.Field<?>> fields = crud.getFields();
@@ -48,7 +50,9 @@ public class EntityAdd<E> extends javax.swing.JDialog {
 			JLabel label = new JLabel(f.getName());
 			JComponent edit;
 			Supplier<?> val;
-			if (f.getType() == Integer.class || f.getType() == Integer.TYPE) {
+			if (f.getSetter() == null) {
+				continue;
+			} else if (f.getType() == Integer.class || f.getType() == Integer.TYPE) {
 				JSpinner s = new JSpinner();
 				s.setModel(new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
 				val = () -> (int) s.getValue();
@@ -68,17 +72,23 @@ public class EntityAdd<E> extends javax.swing.JDialog {
 				s.setText("");
 				val = s::getText;
 				edit = s;
+			} else if (f.getType() == byte[].class) {
+				ImageEditor s= new ImageEditor();
+				val = s::asBytes;
+				edit = s;
 			} else {
 				JComboBox<Object> s = new JComboBox<>();
 				Object[] items;
 				try (Session session = connector.openSession()) {
-					items = session.createQuery("from " + f.getType().getSimpleName(), f.getType())
-							.list().toArray();
+					CriteriaQuery<?> createQuery = session.getSessionFactory().getCriteriaBuilder().createQuery(f.getType());
+					createQuery.from(f.getType());
+					items = session.createQuery(createQuery).list().toArray();
 				}
 				s.setModel(new DefaultComboBoxModel<>(items));
 				val = s::getSelectedItem;
 				edit = s;
 			}
+			supplier[i] = val;
 			GridBagConstraints g = new GridBagConstraints();
 			g.gridx = 0;
 			g.gridy = i;
@@ -88,6 +98,7 @@ public class EntityAdd<E> extends javax.swing.JDialog {
 			g.gridx = 1;
 			grid.add(edit, g);
 		}
+		pack();
 	}
 
 	/**
@@ -157,6 +168,7 @@ public class EntityAdd<E> extends javax.swing.JDialog {
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
 		this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
+	private static final Logger LOG = Logger.getLogger(EntityAdd.class.getName());
 
 	@SuppressWarnings("unchecked")
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
@@ -175,7 +187,11 @@ public class EntityAdd<E> extends javax.swing.JDialog {
 			((BiConsumer<E, Object>) f.getSetter()).accept(e, (Object) this.supplier[i].get()); // Safe
 		}
 		try (Session s = connector.openSession()) {
-			s.update(e);
+			Transaction t = s.beginTransaction();
+			LOG.info("Before save: " + e);
+			s.save(e);
+			LOG.info("After save: " + e);
+			t.commit();
 		}
 		cancelButtonActionPerformed(evt);
     }//GEN-LAST:event_saveButtonActionPerformed

@@ -37,12 +37,14 @@ public class Categorie extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         panelButton = new javax.swing.JButton();
+        logoutButton = new javax.swing.JButton();
         jLabel25 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        logedInLabel = new javax.swing.JLabel();
         useroptions = new javax.swing.JPanel();
+        loginButton = new javax.swing.JButton();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(600, 0), new java.awt.Dimension(600, 0), new java.awt.Dimension(600, 32767));
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 460), new java.awt.Dimension(0, 460), new java.awt.Dimension(32767, 460));
 
         panelButton.setText("adminPanel");
         panelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -51,7 +53,15 @@ public class Categorie extends javax.swing.JFrame {
             }
         });
 
+        logoutButton.setText("Uitloggen");
+        logoutButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutButtonActionPerformed(evt);
+            }
+        });
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Categorie overzicht");
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jLabel25.setText("Categorie");
@@ -73,65 +83,74 @@ public class Categorie extends javax.swing.JFrame {
         gridBagConstraints.weighty = 0.6;
         getContentPane().add(jScrollPane1, gridBagConstraints);
 
-        jButton1.setText("Login");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        loginButton.setText("Login");
+        loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                loginButtonActionPerformed(evt);
             }
         });
+        useroptions.add(loginButton);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.ABOVE_BASELINE_TRAILING;
-        getContentPane().add(jButton1, gridBagConstraints);
-
-        logedInLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.ABOVE_BASELINE;
-        gridBagConstraints.weightx = 0.1;
-        getContentPane().add(logedInLabel, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         getContentPane().add(useroptions, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 4;
+        getContentPane().add(filler1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 1;
+        getContentPane().add(filler2, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Loginforum w = new Loginforum(factory);
-		w.setVisible(true);
-		this.setVisible(false);
-		w.addWindowFocusListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				setVisible(true);
-				user = w.getUser();
-				if(user != null) {
-					if(user.getId() == 1) {
-						useroptions.add(panelButton);
-					} else {
-						useroptions.remove(panelButton);
-					}
-				}
+    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
+        LoginForm window = new LoginForm(this, factory);
+		window.setVisible(true);
+		user = window.getUser();
+		System.out.println(user);
+		if (user != null) {
+			useroptions.add(logoutButton);
+			useroptions.remove(loginButton);
+			if (user.getId() == 1) {
+				useroptions.add(panelButton);
+				useroptions.invalidate();
+				useroptions.revalidate();
+			} else {
+				useroptions.remove(panelButton);
 			}
-		});
-    }//GEN-LAST:event_jButton1ActionPerformed
+		} else {
+			useroptions.add(loginButton);
+
+		}
+    }//GEN-LAST:event_loginButtonActionPerformed
 
     private void panelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_panelButtonActionPerformed
         new Administrator(factory).setVisible(true);
     }//GEN-LAST:event_panelButtonActionPerformed
 
+    private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
+        useroptions.remove(panelButton);
+		useroptions.add(loginButton);
+		useroptions.remove(logoutButton);
+    }//GEN-LAST:event_logoutButtonActionPerformed
+
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel logedInLabel;
+    private javax.swing.JButton loginButton;
+    private javax.swing.JButton logoutButton;
     private javax.swing.JButton panelButton;
     private javax.swing.JPanel useroptions;
     // End of variables declaration//GEN-END:variables

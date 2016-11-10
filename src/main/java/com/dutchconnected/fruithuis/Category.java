@@ -5,11 +5,14 @@
  */
 package com.dutchconnected.fruithuis;
 
+import com.dutchconnected.fruithuis.frames.Crud;
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import org.hibernate.annotations.Type;
 
 /**
  *
@@ -17,7 +20,14 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "PRODUCTSOORT")
-public class Category {
+public class Category implements Serializable {
+	
+	public static final Crud<Category> CRUD = new Crud<>(Category.class)
+			.addField("id", Category::getId, null, Integer.TYPE)
+			.addField("naam", Category::getName, Category::setName, String.class)
+			.addField("image", Category::getImage, Category::setImage, byte[].class);
+	private static final long serialVersionUID = 3715900176843151243L;
+	
     @Id
     @GeneratedValue
     @Column(name = "id")
@@ -26,6 +36,7 @@ public class Category {
     @Column(name = "naam")
     private String name;
 
+	//@Type(type="org.hibernate.type.PrimitiveByteArrayBlobType") 
     @Column(name = "image")
     private byte[] image;
 

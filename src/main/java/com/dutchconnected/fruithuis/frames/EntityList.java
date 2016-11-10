@@ -15,6 +15,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.logging.Logger;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.table.AbstractTableModel;
@@ -36,11 +38,14 @@ public class EntityList<T> extends javax.swing.JDialog {
 		this.crud = crud;
 		initComponents();
 	}
+	private static final Logger LOG = Logger.getLogger(EntityList.class.getName());
 	
+	@SuppressWarnings("unchecked") // Forgive me...
 	private void refresh() {
 		entities.clear();
 		try (Session s = connection.openSession()) {
-			entities.addAll(s.createQuery("from " + crud.getClazz().getSimpleName(), crud.getClazz()).list());
+			entities.addAll(crud.selectAll(s).list());
+			LOG.info("I have " + entities.size() + " entities");
 		}
 		table.setModel(model = new TableModel());
 	}
@@ -107,15 +112,8 @@ public class EntityList<T> extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Window other = this.crud.addAction().apply(this, connection);
-		other.setVisible(true);
-		other.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosed(WindowEvent e) {
-				refresh();
-			}
-			
-		});
+        this.crud.addAction().apply(this, connection).setVisible(true);
+		refresh();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -133,7 +131,8 @@ public class EntityList<T> extends javax.swing.JDialog {
         Point p = evt.getPoint();
         int row = table.rowAtPoint(p);
         if (evt.getClickCount() == 2) {
-            this.crud.editAction().apply(this, connection, this.entities.get(this.table.convertRowIndexToModel(row)));
+            this.crud.editAction().apply(this, connection, this.entities.get(this.table.convertRowIndexToModel(row))).setVisible(true);
+			refresh();
         }
     }//GEN-LAST:event_tableMouseClicked
 
@@ -205,7 +204,7 @@ public class EntityList<T> extends javax.swing.JDialog {
 
 		@Override
 		public String getColumnName(int column) {
-			return crud.getFields().get(columnIndex).getName();
+			return crud.getFields().get(column).getName();
 		}
 
 		@Override

@@ -5,6 +5,8 @@
  */
 package com.dutchconnected.fruithuis;
 
+import com.dutchconnected.fruithuis.frames.Crud;
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +22,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "BESTELLING")
 
-public class Order {
+public class Order implements Serializable {
+	public static final Crud<Order> CRUD = new Crud<>(Order.class)
+			.addField("id", Order::getId, null, Integer.TYPE)
+			.addField("horecaklant", Order::getUserId, Order::setUserId, User.class)
+			.addField("prijs", Order::getPrice, Order::setPrice, Integer.class);
+	private static final long serialVersionUID = -4914856071375611612L;
+	
     @Id @GeneratedValue
     @Column(name = "id")
     private int id;

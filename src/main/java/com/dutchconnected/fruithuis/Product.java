@@ -5,15 +5,19 @@
  */
 package com.dutchconnected.fruithuis;
 
+import com.dutchconnected.fruithuis.frames.Crud;
+import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.hibernate.annotations.Type;
 
 /**
  *
@@ -22,7 +26,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "PRODUCT")
 
-public class Product {
+public class Product implements Serializable {
+	public static final Crud<Product> CRUD = new Crud<>(Product.class)
+			.addField("id", Product::getId, null, Integer.TYPE)
+			.addField("naam", Product::getName, Product::setName, String.class)
+			.addField("image", Product::getImage, Product::setImage, byte[].class)
+			.addField("categorie", Product::getCategoryId, Product::setCategoryId, Category.class);
+	private static final long serialVersionUID = -2353462766190146423L;
+	
     @Id
     @GeneratedValue
     @Column(name = "id")
@@ -31,6 +42,7 @@ public class Product {
     @Column(name = "naam")
     private String name;
 
+	//@Type(type="org.hibernate.type.PrimitiveByteArrayBlobType") 
     @Column(name = "image")
     private byte[] image;
     
@@ -38,7 +50,7 @@ public class Product {
     @JoinColumn(name = "productsoort_id")
     private Category categoryId;
     
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn (name = "product_id")
     private Set<ProductUnitUser> price;
 

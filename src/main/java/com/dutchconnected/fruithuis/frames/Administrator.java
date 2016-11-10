@@ -6,6 +6,7 @@
 package com.dutchconnected.fruithuis.frames;
 
 import com.dutchconnected.fruithuis.Category;
+import com.dutchconnected.fruithuis.Product;
 import org.hibernate.SessionFactory;
 
 /**
@@ -51,7 +52,7 @@ public class Administrator extends javax.swing.JFrame {
 
         jButton7.setText("Verwijderen");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Categorie"));
@@ -75,6 +76,11 @@ public class Administrator extends javax.swing.JFrame {
         jPanel5.setLayout(new java.awt.GridBagLayout());
 
         productShow.setText("Bekijken");
+        productShow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                productShowActionPerformed(evt);
+            }
+        });
         jPanel5.add(productShow, new java.awt.GridBagConstraints());
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -138,8 +144,12 @@ public class Administrator extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void categorieShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categorieShowActionPerformed
-
+		Category.CRUD.listAction().apply(this, connection).setVisible(true);
     }//GEN-LAST:event_categorieShowActionPerformed
+
+    private void productShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productShowActionPerformed
+        Product.CRUD.listAction().apply(this, connection).setVisible(true);
+    }//GEN-LAST:event_productShowActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

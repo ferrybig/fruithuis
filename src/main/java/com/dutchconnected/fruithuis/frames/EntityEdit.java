@@ -11,6 +11,7 @@ import java.awt.Window;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -21,6 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 /**
  *
@@ -74,18 +76,25 @@ public class EntityEdit<E> extends javax.swing.JDialog {
 				s.setText(String.valueOf(f.getGetter().apply(entity)));
 				val = s::getText;
 				edit = s;
+			} else if (f.getType() == byte[].class) {
+				ImageEditor s= new ImageEditor();
+				s.setBytes((byte[])f.getGetter().apply(entity));
+				val = s::asBytes;
+				edit = s;
 			} else {
 				JComboBox<Object> s= new JComboBox<>();
 				Object[] items;
 				try (Session session = connector.openSession()) {
-					items = session.createQuery("from " + f.getType().getSimpleName(), f.getType())
-							.list().toArray();
+					CriteriaQuery<?> createQuery = session.getSessionFactory().getCriteriaBuilder().createQuery(f.getType());
+					createQuery.from(f.getType());
+					items = session.createQuery(createQuery).list().toArray();
 				}
 				s.setModel(new DefaultComboBoxModel<>(items));
 				s.setSelectedItem(f.getGetter().apply(entity));
 				val = s::getSelectedItem;
 				edit = s;
 			}
+			supplier[i] = val;
 			GridBagConstraints g = new GridBagConstraints();
 			g.gridx = 0;
 			g.gridy = i;
@@ -95,6 +104,7 @@ public class EntityEdit<E> extends javax.swing.JDialog {
 			g.gridx = 1;
 			grid.add(edit, g);
 		}
+		pack();
 	}
 
 	/**
@@ -174,7 +184,9 @@ public class EntityEdit<E> extends javax.swing.JDialog {
 			((BiConsumer<E, Object>)f.getSetter()).accept(entity, (Object) this.supplier[i].get()); // Safe
 		}
 		try(Session s = connector.openSession()) {
+			Transaction t = s.beginTransaction();
 			s.update(entity);
+			t.commit();
 		}
 		cancelButtonActionPerformed(evt);
     }//GEN-LAST:event_saveButtonActionPerformed

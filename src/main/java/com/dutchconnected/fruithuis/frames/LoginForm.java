@@ -5,23 +5,19 @@
  */
 package com.dutchconnected.fruithuis.frames;
 
-import com.dutchconnected.fruithuis.Category;
-import com.dutchconnected.fruithuis.Order;
-import com.dutchconnected.fruithuis.Product;
-import com.dutchconnected.fruithuis.ProductOrder;
-import com.dutchconnected.fruithuis.ProductUnitUser;
-import com.dutchconnected.fruithuis.Unit;
 import com.dutchconnected.fruithuis.User;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 /**
  *
  * @author Karan
  */
-public class Loginforum extends javax.swing.JFrame {
+public class LoginForm extends javax.swing.JDialog {
 
 	private User user;
 	User getUser() {
@@ -30,11 +26,8 @@ public class Loginforum extends javax.swing.JFrame {
 
     private final SessionFactory factory;
 
-    /**
-     * Creates new form Loginforum
-     * @param factory
-     */
-    public Loginforum(SessionFactory factory) {
+    public LoginForm(JFrame parent, SessionFactory factory) {
+		super(parent, true);
         this.factory = factory;
         initComponents();
         
@@ -54,8 +47,6 @@ public class Loginforum extends javax.swing.JFrame {
         klantlogin = new javax.swing.JButton();
         klantoverslaan = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Klantnummer");
 
@@ -131,64 +122,21 @@ public class Loginforum extends javax.swing.JFrame {
     }//GEN-LAST:event_klantoverslaanActionPerformed
 
     private void klantloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_klantloginActionPerformed
-        try(Session s = factory.openSession()) {
-            user = s.find(User.class, Integer.parseInt(klantnr.getText()));
+        user = new User();
+		user.setKlantnummer(1);
+		user.setId(1);
+		try(Session s = factory.openSession()) {
+			//s.save(user);
+            //user = s.find(User.class, Integer.parseInt(klantnr.getText()));
             if(user == null) {
                 JOptionPane.showMessageDialog(this, "Ongeldig klant nummer", "Probleem", JOptionPane.ERROR_MESSAGE);
             } else {
-                this.dispose();
-                
+				this.dispose();
             }
         }
     }//GEN-LAST:event_klantloginActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) throws ClassNotFoundException {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Loginforum.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Loginforum.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Loginforum.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Loginforum.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        Class.forName("oracle.jdbc.driver.OracleDriver");
-          SessionFactory factory = new Configuration().
-                    configure().
-                    //addPackage("com.xyz") //add package if used.
-                    addAnnotatedClass(Category.class).
-                    addAnnotatedClass(Order.class).
-                    addAnnotatedClass(Product.class).
-                    addAnnotatedClass(ProductOrder.class).
-                    addAnnotatedClass(ProductUnitUser.class).
-                    addAnnotatedClass(Unit.class).
-                    addAnnotatedClass(User.class).
-                    buildSessionFactory();
-            
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Loginforum(factory).setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

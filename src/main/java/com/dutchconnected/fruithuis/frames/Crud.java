@@ -11,8 +11,11 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.swing.JDialog;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 public class Crud<E> {
 
@@ -25,6 +28,12 @@ public class Crud<E> {
 
 	public Class<E> getClazz() {
 		return clazz;
+	}
+	
+	public Query<E> selectAll(Session s) {
+		CriteriaQuery<E> createQuery = s.getSessionFactory().getCriteriaBuilder().createQuery(getClazz());
+		createQuery.from(getClazz());
+		return s.createQuery(createQuery);
 	}
 
 	public <T> Crud<E> addField(String name, Function<E, ? extends T> getter, BiConsumer<E, ? super T> setter, Class<T> type) {

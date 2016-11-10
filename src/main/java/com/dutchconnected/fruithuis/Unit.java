@@ -5,6 +5,8 @@
  */
 package com.dutchconnected.fruithuis;
 
+import com.dutchconnected.fruithuis.frames.Crud;
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,7 +20,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "UNIT")
 
-public class Unit {
+public class Unit implements Serializable  {
+	
+	public static final Crud<Unit> CRUD = new Crud<>(Unit.class)
+			.addField("id", Unit::getId, null, Integer.TYPE)
+			.addField("naam enkel", Unit::getSmall, Unit::setSmall, String.class)
+			.addField("naam meervoud", Unit::getLarge, Unit::setLarge, String.class);
+	private static final long serialVersionUID = 1815518970590798840L;
+	
     @Id @GeneratedValue
     @Column(name = "id")
     private int id;  
