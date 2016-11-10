@@ -138,10 +138,7 @@ public class Administrator extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void categorieShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categorieShowActionPerformed
-        new EntityOverview<Category>(this, Category.class, connection, CategoryAdd::new)
-				.addColumn("id", Integer.TYPE, Category::getId)
-				.addColumn("Naam", String.class, Category::getName)
-				.setVisible(true);
+        
     }//GEN-LAST:event_categorieShowActionPerformed
 
 

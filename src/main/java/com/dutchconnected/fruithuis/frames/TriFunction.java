@@ -7,15 +7,10 @@ package com.dutchconnected.fruithuis.frames;
 
 /**
  *
- * @author Karan
+ * @author admin
  */
-public class Login {
+public interface TriFunction<A, B, C, R> {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
-    
+	public R apply(A a, B b, C c);
+	
 }

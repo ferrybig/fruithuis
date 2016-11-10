@@ -5,6 +5,7 @@
  */
 package com.dutchconnected.fruithuis.frames;
 
+import java.awt.Point;
 import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -20,30 +21,26 @@ import javax.swing.table.AbstractTableModel;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-public class EntityOverview<T> extends javax.swing.JDialog {
+public class EntityList<T> extends javax.swing.JDialog {
 
 	private static final long serialVersionUID = -9011344244604411594L;
 	
-	private final List<Column<T, ?>> info = new ArrayList<>();
-	private final Class<T> entity;
 	private final List<T> entities = new ArrayList<>();
-	private final BiFunction<? super JDialog, SessionFactory, ? extends Window> addFunction;
 	private final SessionFactory connection;
 	private TableModel model;
+	private final Crud<T> crud;
 
-	public EntityOverview(Window parent, Class<T> entity, SessionFactory connection,
-			BiFunction<? super JDialog, SessionFactory, Window> addFunction) {
-		super(parent);
-		this.entity = entity;
-		this.addFunction = addFunction;
-		this.connection = connection;
+	public EntityList(Window p, SessionFactory connector, Crud<T> crud) {
+		super(p);
+		this.connection = connector;
+		this.crud = crud;
 		initComponents();
 	}
 	
 	private void refresh() {
 		entities.clear();
 		try (Session s = connection.openSession()) {
-			entities.addAll(s.createQuery("from " + entity.getSimpleName(), entity).list());
+			entities.addAll(s.createQuery("from " + crud.getClazz().getSimpleName(), crud.getClazz()).list());
 		}
 		table.setModel(model = new TableModel());
 	}
@@ -63,10 +60,14 @@ public class EntityOverview<T> extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         table.setAutoCreateRowSorter(true);
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(table);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -106,7 +107,7 @@ public class EntityOverview<T> extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Window other = this.addFunction.apply(this, connection);
+        Window other = this.crud.addAction().apply(this, connection);
 		other.setVisible(true);
 		other.addWindowListener(new WindowAdapter() {
 			@Override
@@ -128,11 +129,14 @@ public class EntityOverview<T> extends javax.swing.JDialog {
 		}
     }//GEN-LAST:event_jButton1ActionPerformed
 
-	public <R> EntityOverview<T> addColumn(String name, Class<R> clazz, Function<T, R> getter) {
-		info.add(new Column<>(getter, clazz, name));
-		return this;
-	}
-	
+    private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
+        Point p = evt.getPoint();
+        int row = table.rowAtPoint(p);
+        if (evt.getClickCount() == 2) {
+            this.crud.editAction().apply(this, connection, this.entities.get(this.table.convertRowIndexToModel(row)));
+        }
+    }//GEN-LAST:event_tableMouseClicked
+
 	@Override
 	public void setVisible(boolean b) {
 		if(b) {
@@ -186,22 +190,22 @@ public class EntityOverview<T> extends javax.swing.JDialog {
 
 		@Override
 		public int getColumnCount() {
-			return info.size();
+			return crud.getFields().size();
 		}
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			return info.get(columnIndex).getFunction().apply(entities.get(rowIndex));
+			return crud.getFields().get(columnIndex).getGetter().apply(entities.get(rowIndex));
 		}
 
 		@Override
 		public Class<?> getColumnClass(int columnIndex) {
-			return info.get(columnIndex).getType();
+			return crud.getFields().get(columnIndex).getType();
 		}
 
 		@Override
 		public String getColumnName(int column) {
-			return info.get(column).getName();
+			return crud.getFields().get(columnIndex).getName();
 		}
 
 		@Override
