@@ -7,6 +7,7 @@ package com.dutchconnected.fruithuis.frames;
 
 import com.dutchconnected.fruithuis.Category;
 import com.dutchconnected.fruithuis.Product;
+import com.dutchconnected.fruithuis.User;
 import org.hibernate.SessionFactory;
 
 /**
@@ -108,6 +109,11 @@ public class Administrator extends javax.swing.JFrame {
         jPanel7.setLayout(new java.awt.GridBagLayout());
 
         customerShow.setText("Bekijken");
+        customerShow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                customerShowActionPerformed(evt);
+            }
+        });
         jPanel7.add(customerShow, new java.awt.GridBagConstraints());
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -144,12 +150,16 @@ public class Administrator extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void categorieShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categorieShowActionPerformed
-		Category.CRUD.listAction().apply(this, connection).setVisible(true);
+	Category.CRUD.listAction().apply(this, connection).setVisible(true);
     }//GEN-LAST:event_categorieShowActionPerformed
 
     private void productShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productShowActionPerformed
         Product.CRUD.listAction().apply(this, connection).setVisible(true);
     }//GEN-LAST:event_productShowActionPerformed
+
+    private void customerShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerShowActionPerformed
+        User.CRUD.listAction().apply(this, connection).setVisible(true);
+    }//GEN-LAST:event_customerShowActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -126,7 +126,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", name=" + name + ", address=" + address + ", city=" + city + ", zipcode=" + zipcode + ", phone=" + phone + ", klantnummer=" + klantnummer + '}';
+        return "User {" + " name=" + name + ", address=" + address + ", city=" + city + ", zipcode=" + zipcode + ", phone=" + phone + ", klantnummer=" + klantnummer + '}';
     }
     
     

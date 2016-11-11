@@ -75,7 +75,7 @@ public class Unit implements Serializable  {
 
     @Override
     public String toString() {
-        return "Unit{" + "id=" + id + ", small=" + small + ", large=" + large + '}';
+        return "Unit {" + " small=" + small + ", large=" + large + '}';
     }
     
     

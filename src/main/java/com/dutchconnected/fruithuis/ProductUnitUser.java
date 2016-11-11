@@ -124,7 +124,7 @@ public class ProductUnitUser implements Serializable {
 
     @Override
     public String toString() {
-        return "ProductUnitUser{" + "id=" + id + ", productId=" + productId + ", unitId=" + unitId + ", userId=" + userId + ", basisPrice=" + basisPrice + ", amountPrice=" + amountPrice + ", minAmount=" + minAmount + '}';
+        return "ProductUnitUser{"+ ", basisPrice=" + basisPrice + ", amountPrice=" + amountPrice + ", minAmount=" + minAmount + '}';
     }
     
     
