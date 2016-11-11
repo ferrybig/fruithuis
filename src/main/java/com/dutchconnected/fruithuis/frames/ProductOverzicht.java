@@ -8,8 +8,12 @@ package com.dutchconnected.fruithuis.frames;
 import com.dutchconnected.fruithuis.Category;
 import com.dutchconnected.fruithuis.Product;
 import java.awt.GridBagConstraints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BiConsumer;
 
 /**
@@ -96,7 +100,12 @@ public class ProductOverzicht extends javax.swing.JPanel {
         gridBagConstraints.weighty = 0.1;
         add(jScrollPane1, gridBagConstraints);
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Terug");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -104,6 +113,10 @@ public class ProductOverzicht extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHEAST;
         add(jButton1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.fireActionPerformed(evt);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -141,6 +154,52 @@ public class ProductOverzicht extends javax.swing.JPanel {
                 new ProductOverzicht().setVisible(true);
             }
         });
+    }
+    
+    private final List<ActionListener> listeners = new CopyOnWriteArrayList<ActionListener>();
+    
+    /**
+     * Adds an <code>ActionListener</code> to the button.
+     * @param l the <code>ActionListener</code> to be added
+     */
+    public void addActionListener(ActionListener l) {
+        listeners.add( l);
+    }
+
+    /**
+     * Removes an <code>ActionListener</code> from the button.
+     * If the listener is the currently set <code>Action</code>
+     * for the button, then the <code>Action</code>
+     * is set to <code>null</code>.
+     *
+     * @param l the listener to be removed
+     */
+    public void removeActionListener(ActionListener l) {
+       listeners.remove( l);
+    }
+    
+    /**
+     * Notifies all listeners that have registered interest for
+     * notification on this event type.  The event instance
+     * is lazily created using the <code>event</code>
+     * parameter.
+     *
+     * @param event  the <code>ActionEvent</code> object
+     * @see EventListenerList
+     */
+    protected void fireActionPerformed(ActionEvent event) {
+        Iterator<ActionListener> itr = listeners.iterator();
+        if(itr.hasNext()) {
+            String actionCommand = event.getActionCommand();
+                     ActionEvent e = new ActionEvent(this,
+                                          ActionEvent.ACTION_PERFORMED,
+                                          actionCommand,
+                                          event.getWhen(),
+                                          event.getModifiers());
+             do {
+                itr.next().actionPerformed(e);
+            } while(itr.hasNext());
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

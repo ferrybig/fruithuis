@@ -34,6 +34,8 @@ public class Categorie extends javax.swing.JFrame {
                 everything.stream().map(CategoryPanel::new).peek(this::addListeners).peek(panels::add).forEach(catHolder::add);
                         }
                 productOverzicht1.setBuyFunction(winkelwagen::addProduct);
+                productOverzicht1.addActionListener(e -> 
+                   ((CardLayout)basePane.getLayout()).show(basePane, "all"));
                 
     }
 
@@ -95,6 +97,11 @@ public class Categorie extends javax.swing.JFrame {
         useroptions.add(loginButton);
 
         jButton1.setText("winkelwagen");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         useroptions.add(jButton1);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -170,6 +177,10 @@ public class Categorie extends javax.swing.JFrame {
 		useroptions.remove(logoutButton);
     }//GEN-LAST:event_logoutButtonActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        winkelwagen.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -199,7 +210,7 @@ public class Categorie extends javax.swing.JFrame {
                    Category category = panel.getCategory();
                    s.refresh(category);
                    productOverzicht1.setCategory(category);
-                   ((CardLayout)basePane.getLayout()).show(basePane, "product");
+                   ((CardLayout)basePane.getLayout()).show(basePane, "products");
                }
             }
         });
