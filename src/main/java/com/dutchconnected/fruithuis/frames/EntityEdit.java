@@ -37,7 +37,7 @@ public class EntityEdit<E> extends javax.swing.JDialog {
 
 	@SuppressWarnings("cast")
 	public EntityEdit(Window p, SessionFactory connector, E entity, Crud<E> crud) {
-		super(p);
+		super(p, ModalityType.APPLICATION_MODAL);
 		initComponents();
 		this.title.setText(this.title.getText() + String.valueOf(entity));
 		this.connector = connector;

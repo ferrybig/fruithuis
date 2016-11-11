@@ -5,11 +5,14 @@
  */
 package com.dutchconnected.fruithuis.frames;
 
+import com.dutchconnected.fruithuis.Category;
 import com.dutchconnected.fruithuis.User;
-import java.awt.Window;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import javax.swing.JButton;
+import java.awt.CardLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 /**
@@ -20,10 +23,18 @@ public class Categorie extends javax.swing.JFrame {
 
 	private final SessionFactory factory;
 	private User user;
+        private final List<Category> everything;
+        private final List<CategoryPanel> panels = new ArrayList<>();
 
     public Categorie(SessionFactory factory) {
         this.factory = factory;
 		initComponents();
+                try(Session s = factory.openSession()) {
+                everything = Category.CRUD.selectAll(s).list();
+                everything.stream().map(CategoryPanel::new).peek(this::addListeners).peek(panels::add).forEach(catHolder::add);
+                        }
+                productOverzicht1.setBuyFunction(winkelwagen::addProduct);
+                
     }
 
     /**
@@ -38,13 +49,17 @@ public class Categorie extends javax.swing.JFrame {
 
         panelButton = new javax.swing.JButton();
         logoutButton = new javax.swing.JButton();
+        winkelwagen = new com.dutchconnected.fruithuis.frames.Winkelwagen();
         jLabel25 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel1 = new javax.swing.JPanel();
         useroptions = new javax.swing.JPanel();
         loginButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(600, 0), new java.awt.Dimension(600, 0), new java.awt.Dimension(600, 32767));
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 460), new java.awt.Dimension(0, 460), new java.awt.Dimension(32767, 460));
+        basePane = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        catHolder = new javax.swing.JPanel();
+        productOverzicht1 = new com.dutchconnected.fruithuis.frames.ProductOverzicht();
 
         panelButton.setText("adminPanel");
         panelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -71,18 +86,6 @@ public class Categorie extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.ABOVE_BASELINE_LEADING;
         getContentPane().add(jLabel25, gridBagConstraints);
 
-        jScrollPane1.setViewportView(jPanel1);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 0.6;
-        gridBagConstraints.weighty = 0.6;
-        getContentPane().add(jScrollPane1, gridBagConstraints);
-
         loginButton.setText("Login");
         loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,6 +93,9 @@ public class Categorie extends javax.swing.JFrame {
             }
         });
         useroptions.add(loginButton);
+
+        jButton1.setText("winkelwagen");
+        useroptions.add(jButton1);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
@@ -106,6 +112,22 @@ public class Categorie extends javax.swing.JFrame {
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 1;
         getContentPane().add(filler2, gridBagConstraints);
+
+        basePane.setLayout(new java.awt.CardLayout());
+
+        jScrollPane1.setViewportView(catHolder);
+
+        basePane.add(jScrollPane1, "all");
+        basePane.add(productOverzicht1, "products");
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        getContentPane().add(basePane, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -133,6 +155,13 @@ public class Categorie extends javax.swing.JFrame {
 
     private void panelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_panelButtonActionPerformed
         new Administrator(factory).setVisible(true);
+        try(Session s = factory.openSession()) {
+            panels.forEach(this::remove);
+            panels.clear();
+            everything.clear();
+                everything.addAll(Category.CRUD.selectAll(s).list());
+                everything.stream().map(CategoryPanel::new).peek(this::addListeners).peek(panels::add).forEach(catHolder::add);
+                        }
     }//GEN-LAST:event_panelButtonActionPerformed
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
@@ -144,14 +173,35 @@ public class Categorie extends javax.swing.JFrame {
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel basePane;
+    private javax.swing.JPanel catHolder;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton loginButton;
     private javax.swing.JButton logoutButton;
     private javax.swing.JButton panelButton;
+    private com.dutchconnected.fruithuis.frames.ProductOverzicht productOverzicht1;
     private javax.swing.JPanel useroptions;
+    private com.dutchconnected.fruithuis.frames.Winkelwagen winkelwagen;
     // End of variables declaration//GEN-END:variables
+
+
+
+    private void addListeners(CategoryPanel panel) {
+        
+        panel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               try(Session s = factory.openSession()) {
+                   Category category = panel.getCategory();
+                   s.refresh(category);
+                   productOverzicht1.setCategory(category);
+                   ((CardLayout)basePane.getLayout()).show(basePane, "product");
+               }
+            }
+        });
+    }
 }

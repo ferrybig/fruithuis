@@ -7,10 +7,15 @@ package com.dutchconnected.fruithuis;
 
 import com.dutchconnected.fruithuis.frames.Crud;
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
@@ -37,8 +42,13 @@ public class Category implements Serializable {
     private String name;
 
 	//@Type(type="org.hibernate.type.PrimitiveByteArrayBlobType") 
+    @Lob
     @Column(name = "image")
     private byte[] image;
+    
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn (name = "productsoort_id")
+    private Set<Product> products;
 
     public Category() {
     }
@@ -71,6 +81,14 @@ public class Category implements Serializable {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 
     @Override

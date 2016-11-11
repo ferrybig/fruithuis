@@ -3,19 +3,61 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fruithuisje;
+package com.dutchconnected.fruithuis.frames;
+
+import com.dutchconnected.fruithuis.Category;
+import com.dutchconnected.fruithuis.Product;
+import java.awt.GridBagConstraints;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiConsumer;
 
 /**
  *
  * @author sha_y_000
  */
-public class ProductOverzicht extends javax.swing.JFrame {
+public class ProductOverzicht extends javax.swing.JPanel {
 
+    private Category category;
+    private final List<Product> products = new ArrayList<>();
+    private final List<ProductFrame> frames = new ArrayList<>();
+    private BiConsumer<Product,Integer> buyFunction = (a,b)->{};
+    
     /**
      * Creates new form product_overzicht
      */
     public ProductOverzicht() {
         initComponents();
+    }
+
+    public BiConsumer<Product, Integer> getBuyFunction() {
+        return buyFunction;
+    }
+
+    public void setBuyFunction(BiConsumer<Product, Integer> buyFunction) {
+        this.buyFunction = buyFunction;
+    }
+    
+    
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.firePropertyChange("category", this.category, category);
+        this.category = category;
+        products.clear();
+        frames.forEach(this::remove);
+        frames.clear();
+        int i = 0;
+        for(Product p : category.getProducts()) {
+            ProductFrame v = new ProductFrame(p, buyFunction::accept);
+            products.add(p);
+            frames.add(v);
+            this.add(v);
+        }
+        
     }
 
     /**
@@ -26,41 +68,41 @@ public class ProductOverzicht extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
-        jLabel25 = new javax.swing.JLabel();
+        title = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLayout(new java.awt.GridBagLayout());
 
-        jLabel25.setText("Product overzicht");
+        title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        title.setText("Product overzicht");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        add(title, gridBagConstraints);
 
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setViewportView(jPanel1);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(174, Short.MAX_VALUE)
-                .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(128, 128, 128))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel25, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        add(jScrollPane1, gridBagConstraints);
 
-        pack();
+        jButton1.setText("jButton1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHEAST;
+        add(jButton1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -102,8 +144,9 @@ public class ProductOverzicht extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel25;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }

@@ -30,6 +30,7 @@ public class ImageEditor extends javax.swing.JPanel {
 
 	private static final long serialVersionUID = 4426412179557618554L;
 	private BufferedImage image;
+        
 
 	/**
 	 * Creates new form ImageEditor

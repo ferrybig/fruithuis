@@ -122,12 +122,12 @@ public class LoginForm extends javax.swing.JDialog {
     }//GEN-LAST:event_klantoverslaanActionPerformed
 
     private void klantloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_klantloginActionPerformed
-        user = new User();
-		user.setKlantnummer(1);
-		user.setId(1);
+       // user = new User();
+	//	user.setKlantnummer(1);
+		//user.setId(1);
 		try(Session s = factory.openSession()) {
 			//s.save(user);
-            //user = s.find(User.class, Integer.parseInt(klantnr.getText()));
+            user = s.find(User.class, Integer.parseInt(klantnr.getText()));
             if(user == null) {
                 JOptionPane.showMessageDialog(this, "Ongeldig klant nummer", "Probleem", JOptionPane.ERROR_MESSAGE);
             } else {
